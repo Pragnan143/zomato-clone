@@ -9,7 +9,7 @@ const RestrauntSchema = new mongoose.Schema(
     cuisine: [String],
     restaruntTiming: String,
     contactNumber: Number,
-    website: string,
+    website: String,
     popularDishes: [String],
     AvgCost: Number,
     amenties: [String],
