@@ -1,7 +1,10 @@
 import express from "express";
 
 import { RestrauntModel } from "../../database/restarunts";
-import { FoodModel } from "../../database/food";
+import {
+  ValidateRestaurantCity,
+  ValidateSearchString,
+} from "../../validation/restarunt.validation";
 
 const Router = express.Router();
 /**
@@ -12,10 +15,11 @@ const Router = express.Router();
   Method    POST
  */
 
-Router.post("/", async (req, res) => {
+Router.post("/new", async (req, res) => {
   try {
-    const newRestarunts = await FoodModel.create(req.body);
-    return res.status(200).json({ newRestarunts, status: "success" });
+    const { restaruntData } = req.body;
+    const newRestarunts = await RestrauntModel.create({ restaruntData });
+    return res.status(200).json({ newRestarunts });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -32,6 +36,8 @@ Router.post("/", async (req, res) => {
 Router.get("/", async (req, res) => {
   try {
     const { city } = req.query;
+
+    await ValidateRestaurantCity(city);
     const restarunts = await RestrauntModel.find({ city });
 
     if (city.length() === 0) {
@@ -76,6 +82,7 @@ Router.get("/:_id", async (req, res) => {
 Router.get("/search/:searchString", async (req, res) => {
   try {
     const { searchString } = req.params;
+    await ValidateSearchString(searchString);
     const restarunts = await RestrauntModel.find({
       name: { $regex: searchString, $options: "i" },
     });

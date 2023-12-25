@@ -26,7 +26,7 @@ Router.get("/:resId", async (req, res) => {
 
 /**
   Route     /new
-  Des       Creating New restarunt and reviewa
+  Des       Creating New restarunt and review
   Params    
   Access    Public
   Method    POST

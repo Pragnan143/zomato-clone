@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import ConnectDB from "./database/connection";
 import passport from "passport";
 import privateRouteConfig from "./config/route.config";
+import googleAuthConfig from "./config/google.config";
 
 import session from "express-session";
 
@@ -13,23 +14,20 @@ import User from "./api/users/index";
 import Order from "./api/orders/index";
 import Menu from "./api/menu/index";
 import Review from "./api/reviews/index";
-// import Image from "./api/images/index";
+import Image from "./api/images/index";
 
 dotenv.config();
 //adding a private route
 privateRouteConfig(passport);
+
+//adding Google Authentication
+googleAuthConfig(passport);
 
 const zomato = express();
 zomato.use(express.json());
 zomato.use(session({ secret: process.env.JWT_SECRET }));
 zomato.use(passport.initialize());
 zomato.use(passport.session());
-
-zomato.get("/", (req, res) => {
-  res.json({
-    message: "server is running",
-  });
-});
 
 //API usage
 zomato.use("/auth", Auth);
@@ -38,7 +36,7 @@ zomato.use("/food", Food);
 zomato.use("/restarunt", Restarunt);
 zomato.use("/order", Order);
 zomato.use("/menu", Menu);
-// zomato.use("/images", Image);
+zomato.use("/image", Image);
 zomato.use("/review", Review);
 
 //Connection to port
