@@ -32,10 +32,10 @@ Router.post("/", async (req, res) => {
 Router.get("/:id", async (req, res) => {
   try {
     const { _id } = req.params;
-    const findByIdoods = await FoodModel.findById(_id);
+    const foods = await FoodModel.findById(_id);
     return res.json({ foods });
   } catch (error) {
-    return res.ststus(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
@@ -55,7 +55,7 @@ Router.get("/r/:id", async (req, res) => {
     });
     return res.json({ foods });
   } catch (error) {
-    return res.ststus(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
@@ -79,7 +79,7 @@ Router.post("/c/:category", async (req, res) => {
     }
     return res.json({ foods });
   } catch (error) {
-    return res.ststus(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 

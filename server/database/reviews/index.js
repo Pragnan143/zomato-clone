@@ -3,12 +3,12 @@ import mongoose from "mongoose";
 const ReviewSchema = new mongoose.Schema(
   {
     food: { type: mongoose.Types.ObjectId, ref: "foods" },
-    restarunt: { type: mongoose.Types.ObjectId, ref: "restarunts" },
+    restarunts: { type: mongoose.Types.ObjectId, ref: "restarunts" },
     user: { type: mongoose.Types.ObjectId, ref: "users" },
-    rating: {},
-    reviewText: {},
-    isRestaruntReview: {},
-    isFoodReview: {},
+    rating: { type: Number, required: true },
+    reviewText: { type: String, required: true },
+    isRestaruntReview: { type: Boolean, required: true },
+    isFoodReview: { type: Boolean, required: true },
     photos: { type: mongoose.Types.ObjectId, ref: "images" },
   },
   {

@@ -23,7 +23,7 @@ const UserSchema = new mongoose.Schema(
 //Attachments
 
 UserSchema.methods.generateJwtToken = function () {
-  return jwt.sign({ user: this._id.toString() }, "INTERN");
+  return jwt.sign({ user: this._id.toString() }, process.env.JWT_SECRET);
 };
 
 //Helper Functions

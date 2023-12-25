@@ -1,7 +1,6 @@
 import JwtPassport from "passport-jwt";
 
 import { UserModel } from "../database/users";
-import passport from "passport";
 
 const JWTStrategy = JwtPassport.Strategy;
 const ExtractJwt = JwtPassport.ExtractJwt;
@@ -17,7 +16,9 @@ export default (passport) => {
       try {
         const doesUserExist = await UserModel.findById(jwt__payload.user);
 
-        if (!doesUserExist) return done(null, false);
+        if (!doesUserExist) {
+          return done(null, false);
+        }
 
         return done(null, doesUserExist);
       } catch (error) {

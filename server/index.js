@@ -10,17 +10,18 @@ import Auth from "./api/auth/index";
 import Food from "./api/food/index";
 import Restarunt from "./api/restarunts/index";
 import User from "./api/users/index";
+import Order from "./api/orders/index";
+import Menu from "./api/menu/index";
+import Review from "./api/reviews/index";
+// import Image from "./api/images/index";
 
 dotenv.config();
-
 //adding a private route
-
 privateRouteConfig(passport);
 
 const zomato = express();
-zomato.use(session({ secret: "INTERN" }));
-
 zomato.use(express.json());
+zomato.use(session({ secret: process.env.JWT_SECRET }));
 zomato.use(passport.initialize());
 zomato.use(passport.session());
 
@@ -32,9 +33,13 @@ zomato.get("/", (req, res) => {
 
 //API usage
 zomato.use("/auth", Auth);
+zomato.use("/auth", User);
 zomato.use("/food", Food);
 zomato.use("/restarunt", Restarunt);
-zomato.use("/user", passport.authenticate(), User);
+zomato.use("/order", Order);
+zomato.use("/menu", Menu);
+// zomato.use("/images", Image);
+zomato.use("/review", Review);
 
 //Connection to port
 zomato.listen(5000, () => {
