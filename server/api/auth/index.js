@@ -1,7 +1,7 @@
 import express from "express";
 import passport from "passport";
 
-import { UserModel } from "../../database/allModels";
+import { UserModel } from "../../database/users";
 import {
   validateSignIn,
   validateSignUp,
@@ -9,33 +9,40 @@ import {
 
 const Router = express.Router();
 
+/**
+ * Route     /signup
+ * Des       Create new account
+ * Params    none
+ * Access    Public
+ * Method    POST
+ */
 Router.post("/signup", async (req, res) => {
   try {
     await validateSignUp(req.body.credentials);
-
     await UserModel.findByPhoneAndEmail(req.body.credentials);
-
     const newUser = await UserModel.create(req.body.credentials);
-
     const token = newUser.generateJwtToken();
-
     return res.status(200).json({ token, status: "success" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
+/**
+ * Route     /signin
+ * Des       Login to existing account
+ * Params    none
+ * Access    Public
+ * Method    POST
+ */
 Router.post("/signin", async (req, res) => {
   try {
     await validateSignIn(req.body.credentials);
-
-    const user_ = await UserModel.findByEmailAndPassword(req.body.credentials);
-
-    const token = user_.generateJwtToken();
-
+    const user = await UserModel.findByEmailAndPassword(req.body.credentials);
+    const token = user.generateJwtToken();
     return res.status(200).json({ token, status: "success" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
@@ -56,9 +63,10 @@ Router.get(
     // return res.status(200).json({
     //   token: req.session.passport.user.token,
     // });
-    const token = req.passport.session.token;
 
-    return res.status(200).json({ token: token });
+    return res.redirect(
+      `https://localhost:3000/google/${req.session.passport.user.token}`
+    );
   }
 );
 

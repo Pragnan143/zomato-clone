@@ -10,12 +10,12 @@ export default (passport) => {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: `${process.env.REACT_APP_CLIENT_URL}auth/google/callback`,
+        callbackURL: "https://localhost:4000/auth/google/callback",
       },
 
       async (accessToken, refreshToken, profile, done) => {
         const newUser = {
-          fullName: profile.displayName,
+          username: profile.displayName,
           email: profile.emails[0].value,
           profilePic: profile.photos[0].value,
         };

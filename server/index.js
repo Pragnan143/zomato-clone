@@ -2,19 +2,19 @@ import express from "express";
 import dotenv from "dotenv";
 import ConnectDB from "./database/connection";
 import passport from "passport";
+import session from "express-session";
+
 import privateRouteConfig from "./config/route.config";
 import googleAuthConfig from "./config/google.config";
 
-import session from "express-session";
-
-import Auth from "./api/auth/index";
-import Food from "./api/food/index";
-import Restarunt from "./api/restarunts/index";
-import User from "./api/users/index";
-import Order from "./api/orders/index";
-import Menu from "./api/menu/index";
-import Review from "./api/reviews/index";
-import Image from "./api/images/index";
+import Auth from "./api/auth/index.js";
+import Food from "./api/food/index.js";
+import Restarunt from "./api/restarunts/index.js";
+import User from "./api/users/index.js";
+import Order from "./api/orders/index.js";
+import Menu from "./api/menu/index.js";
+import Review from "./api/reviews/index.js";
+import Image from "./api/images/index.js";
 
 dotenv.config();
 //adding a private route
@@ -31,7 +31,7 @@ zomato.use(passport.session());
 
 //API usage
 zomato.use("/auth", Auth);
-zomato.use("/auth", User);
+zomato.use("/user", User);
 zomato.use("/food", Food);
 zomato.use("/restarunt", Restarunt);
 zomato.use("/order", Order);
@@ -39,8 +39,15 @@ zomato.use("/menu", Menu);
 zomato.use("/image", Image);
 zomato.use("/review", Review);
 
+zomato.get("/", (req, res) => {
+  try {
+    return res.send({ message: "hi hello namastae" });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
 //Connection to port
-zomato.listen(5000, () => {
+zomato.listen(4000, () => {
   ConnectDB()
     .then(() => {
       console.log("Server is running !!!");

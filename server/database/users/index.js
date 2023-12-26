@@ -35,7 +35,6 @@ UserSchema.statics.findByPhoneAndEmail = async ({ email, phoneNumber }) => {
   if (checkByEmail || checkByPhone) {
     throw new Error("User Already Exists !!!");
   }
-
   return false;
 };
 
